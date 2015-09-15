@@ -17,7 +17,7 @@ public class SudokuDriver {
 		Scanner console = new Scanner(System.in);
 		Scanner fileScanner;
 		String input;
-		//SudokuBruteForce solver;
+		SudokuBruteForce solver;
 		
 		for (int i = 0; i < MAX_TRIES; i++){
 			try {
@@ -33,6 +33,10 @@ public class SudokuDriver {
 				width = Integer.parseInt(input);
 				length = fileScanner.nextInt();
 				
+				//for testing purposes
+				System.out.println("width: " + width);
+				System.out.println("length: " + length);
+				
 				boardSize = length * width;
 				board = new int[boardSize][boardSize];
 				
@@ -43,8 +47,11 @@ public class SudokuDriver {
 				}
 				
 				
-				//solver = new SudokuBruteForce(width, length, board);
+				solver = new SudokuBruteForce(width, length, board);
 				
+				//Calculating sum integer that will later be used to check solutions against
+				int si = solver.calcSumInt(boardSize);
+				System.out.println("Check Solutions against sum= " + si);
 				
 				
 				console.close();
