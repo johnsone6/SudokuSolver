@@ -34,4 +34,43 @@ public class SudokuBruteForce {
 		
 	}
 	
+	/**
+	 * Checks the inner boxes for duplicate items
+	 * @return true if the board contains no duplicate items, false if the board contains duplicates
+	 */
+	public boolean checkBox(){
+		
+		boolean[] numbers; 
+
+		for (int boxX = 0; boxX < boardSize; boxX += length){
+			for (int boxY = 0; boxY < boardSize; boxY += width){
+				//This is initialized to the default of all false
+				numbers = new boolean[boardSize];
+				
+				for (int x = boxX; x < length + boxX; x++){
+					for (int y = boxY; y < width + boxY; y++){
+						
+						//System.out.print(board[x][y]);
+						
+						//rather than checking the numbers themselves, I am using an array in a pseudo sorted manner
+						//If a number is already contained in the "box" (array) it's spot will be set to true, and I can check
+						//that spot. Otherwise, add it to the known numbers (ie: set it's index to true)
+						
+						if (numbers[board[x][y] - 1]){
+							return false;
+						}
+						else{
+							numbers[board[x][y] - 1] = true;
+						}
+					}
+					//System.out.println();
+				}
+				//System.out.println();
+			}
+		}
+
+		return true;
+	}
+	
+	
 }
