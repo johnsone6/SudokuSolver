@@ -33,6 +33,18 @@ public class SudokuBruteForce {
 	private void findBlanks(){
 		
 	}
+	/** 
+	* finds sum of one row then calculates the
+	* sum of the entire board
+	**/
+	public int calcSumInt(int boardSize){
+		int bs = boardSize;
+		int sumRowInt;
+		int sumInt;
+		sumRowInt = (((bs*bs) + bs)/2);
+		sumInt = sumRowInt * bs;
+		return sumInt;
+	}
 	
 	/**
 	 * Checks the inner boxes for duplicate items
