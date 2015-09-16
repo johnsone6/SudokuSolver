@@ -50,8 +50,13 @@ public class SudokuDriver {
 				solver = new SudokuBruteForce(width, length, board);
 				
 				//Calculating sum integer that will later be used to check solutions against
-				int si = solver.calcSumInt(boardSize);
-				System.out.println("Check Solutions against sum= " + si);
+				int magicInt = solver.calcSumInt(boardSize);
+				System.out.println("Check Solutions against sum= " + magicInt);
+				boolean sumValid = solver.checkPuzzleSum(board, magicInt);
+				System.out.println("Sum is correct: " + sumValid);
+			//	if(sumValid == true){
+			//		boolean dupeNums = solver.duplicateCheck(board);
+			//	}
 				
 				
 				console.close();
