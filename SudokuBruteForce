@@ -1,6 +1,6 @@
 public class SudokuBruteForce {
 	private int[][] board, newBoard;
-	private int width, length;
+	private int width, length, boardSize;
 	
 	
 	
@@ -8,6 +8,7 @@ public class SudokuBruteForce {
 		this.width = width;
 		this.length = length;
 		this.board = board;
+		this.boardSize = width * length;
 	}
 	
 	
