@@ -28,7 +28,7 @@ public class SudokuBruteForce {
 			count = counter.count();
 			fillInSolution();
 			
-			if(checkPuzzleSum()){
+			if(checkPuzzleSum(board, magicInt)){
 				if(/*checkRows() && checkColumns() &&*/ checkBoxes()){
 					solved = true;
 				}
@@ -145,7 +145,7 @@ public class SudokuBruteForce {
 	 * Checks the inner boxes for duplicate items
 	 * @return true if the board contains no duplicate items, false if the board contains duplicates
 	 */
-	public boolean checkBox(){
+	public boolean checkBoxes(){
 		
 		boolean[] numbers; 
 
