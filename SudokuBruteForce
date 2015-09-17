@@ -58,7 +58,7 @@ public class SudokuBruteForce {
 	
 	
 	
-	//**
+	/**
 	 * This method finds the blanks and stores them in a 2D array
 	 * blanks.length will get you the number of blanks in the main puzzle
 	 * the coordinates of each blank are: 
