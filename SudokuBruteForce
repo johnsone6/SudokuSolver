@@ -1,6 +1,9 @@
+import java.util.Stack;
 public class SudokuBruteForce {
-	private int[][] board, newBoard;
-	private int width, length, boardSize;
+	private int[][] board, newBoard, blanks;
+	private int width, length, boardSize, magicInt, numOfBlanks;
+	private Stack<Integer> count;
+	private Counter counter;
 	
 	
 	
@@ -9,31 +12,95 @@ public class SudokuBruteForce {
 		this.length = length;
 		this.board = board;
 		this.boardSize = width * length;
-	}
-	
-	
-	
-	public int[][] findSolution(){
-		//Placeholder
-		return new int[1][1];
-	}
-	
-	
-	/**
-	 * Checks to see if the board is a solution
-	 * @param board the puzzle to be checked
-	 * @return whether or not the current configuration of the board is a solution to the puzzle
-	 */
-	private boolean checkBoard(int[][] board){
-		//Placeholder
-		return true;
-	}
-	
-	
-	//Void is a placeholder until I figure out what data type to return
-	private void findBlanks(){
+		
+		calcSumInt(boardSize);
+		findBlanks();
+		
+		//findSolution();
 		
 	}
+	
+	
+	
+	public boolean findSolution(){
+		boolean solved = false;
+		while (!solved){
+			count = counter.count();
+			fillInSolution();
+			
+			if(checkPuzzleSum()){
+				if(/*checkRows() && checkColumns() &&*/ checkBoxes()){
+					solved = true;
+				}
+			}
+			
+			//Need some way to break out of loop when we have exhausted all possible numbers
+			
+		}
+		return solved;
+	}
+	
+	public void fillInSolution(){
+		for (int i = 0; i < numOfBlanks; i++){
+			board[blanks[i][0]][blanks[i][1]] = count.pop();
+		}
+		
+		//Testing
+		/*
+		for (int i = 0; i < boardSize; i++){
+			for (int j = 0; j < boardSize; j++){
+				System.out.print(board[i][j] + " ");
+			}
+			System.out.println();
+		}
+		*/
+	}
+	
+	
+	
+	//**
+	 * This method finds the blanks and stores them in a 2D array
+	 * blanks.length will get you the number of blanks in the main puzzle
+	 * the coordinates of each blank are: 
+	 * x = blanks[(counter variable)][0]
+	 * y = blanks[(counter variable)][1]
+	 * 
+	 * 
+	 */
+	private void findBlanks(){
+		int blankCount = 0;
+		
+		
+		for (int i = 0; i < boardSize; i++){
+			for (int j = 0; j < boardSize; j++){
+				if (board[i][j] == 0){
+					blankCount++;
+				}
+			}
+		}
+		
+		numOfBlanks = blankCount;
+		blanks = new int[blankCount][2];
+		blankCount = 0;
+		for (int i = 0; i < boardSize; i++){
+			for (int j = 0; j < boardSize; j++){
+				if (board[i][j] == 0){
+					blanks[blankCount][0] = i;
+					blanks[blankCount][1] = j;
+					blankCount++;
+				}
+			}
+		}
+		
+		//Testing
+		/*
+		for (int i = 0; i < blankCount; i++){
+			System.out.print(blanks[i][0]);
+			System.out.println(blanks[i][1]);
+		}
+		*/
+	}
+	
 	/** 
 	* finds sum of one row then calculates the
 	* sum of the entire board
