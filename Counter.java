@@ -1,3 +1,5 @@
+package soduke;
+
 import java.util.*;
 //Nicholas Perkins
 //Nicks work
@@ -8,10 +10,13 @@ public class Counter
 	private int size;
 	private Stack<Integer> count = new Stack<Integer>();
 	private int ndx;
+	private int upperLimit;
 
-	public Counter(int size) 
+	public Counter(int size, int upperLimit) 
 	{
 		this.size = size;
+		this.upperLimit = upperLimit;
+		
 		fillStack();
 	}
 	
@@ -33,7 +38,7 @@ public class Counter
 		int current;
 		current = count.pop();
 		
-		while(current == size)
+		while(current == upperLimit)
 		{
 			current = 1;
 			hold.add(current);
@@ -54,3 +59,4 @@ public class Counter
 	
 	
 }
+
