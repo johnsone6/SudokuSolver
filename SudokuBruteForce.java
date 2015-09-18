@@ -141,7 +141,68 @@ public class SudokuBruteForce {
 			return sumValid;
 	}
 	
-	/**
+	//checks each column for duplicate nums
+	public boolean checkColumns(int board[][]){
+		boolean dupeNums = false;
+		int[][] b = board;
+		
+		for (int i = 0; i < b.length; i++) {
+	        HashSet<Integer> hset = new HashSet<Integer>();
+	        for (int j=0; j < b.length; j++) {
+	            if (hset.contains(b[j][i])){
+	            	System.out.println("column duplicates found: " + b[j][i]);
+	            	System.out.println(i + " by " + j);
+	            	dupeNums = true;
+	            	return dupeNums;
+	            }
+	            else
+	            	hset.add(b[j][i]);
+	        }
+		}
+		System.out.println("No column duplicates found!");
+		return dupeNums;
+	}
+	
+	//checks each row for duplicate nums
+	public boolean checkRows(int board[][]){
+		boolean dupeNums = false;
+		int[][] b = board;
+		
+		for (int i = 0; i < b.length; i++) {
+	        HashSet<Integer> hset = new HashSet<Integer>();
+	        for (int j=0; j < b.length; j++) {
+	            if (hset.contains(b[i][j])){
+	            	System.out.println("row duplicates found: " + b[j][i]);
+	            	System.out.println(i + " by " + j);
+	            	dupeNums = true;
+	            	return dupeNums;
+	            }
+	            else
+	            	hset.add(b[j][i]);
+	        }
+		}
+		System.out.println("No row duplicates found!");
+		return dupeNums;
+	}
+	
+	//checks duplicates
+	//calls methods to run all three checks (columns, rows, boxes)
+	public boolean duplicateCheck(int board[][]){
+		boolean dupeNums = false;
+		int[][] b = board;
+		
+		if (checkColumns(b) == true || 
+			checkRows(b) == true || 
+			checkBoxes(b) == true){
+			System.out.println("YES DUPLICATES! START OVER!");
+			return dupeNums;
+		}
+		else{
+			System.out.println("NO DUPLICATES!");
+			dupeNums = true;
+			return dupeNums;
+		}
+	}**
 	 * Checks the inner boxes for duplicate items
 	 * @return true if the board contains no duplicate items, false if the board contains duplicates
 	 */
