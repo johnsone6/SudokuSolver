@@ -206,8 +206,7 @@ public class SudokuBruteForce {
 	 * Checks the inner boxes for duplicate items
 	 * @return true if the board contains no duplicate items, false if the board contains duplicates
 	 */
-	public boolean checkBoxes(){
-		
+	public boolean checkBoxes(int board[][]){
 		boolean[] numbers; 
 
 		for (int boxX = 0; boxX < boardSize; boxX += length){
