@@ -47,22 +47,26 @@ public class SudokuDriver {
 				}
 				
 			/////////////////////  this tests Erica's part ////////////////	
-			boolean dupeNums = true;
+			boolean solved = false;
 				
-				while (dupeNums == true){
+				while (solved == false){
 					solver = new SudokuBruteForce(width, length, board);
-					//Calculating magic interger to check against
+					//Calculating magic integer to check against
 					int magicInt = solver.calcSumInt(boardSize);
 					System.out.println("Check Solutions against sum= " + magicInt);
-					//Checking magic integer against actualy puzzle sum
-					//boolean sumValid = solver.checkPuzzleSum(board, magicInt);
-					boolean sumValid = true;
+					//Checking magic integer against actually puzzle sum
+					boolean sumValid = solver.checkPuzzleSum(board, magicInt);
+					//boolean sumValid = true;
 					System.out.println("Sum is correct: " + sumValid);
 					//Checking for duplicates...
 					if(sumValid == true){
-						dupeNums = solver.duplicateCheck(board);
+						boolean dupeNums = solver.duplicateCheck(board);
+						if(dupeNums == false){
+							solved = true;
+						}
 					}
 					else{
+						solved = false;
 						//TODO start over
 					}
 				}
