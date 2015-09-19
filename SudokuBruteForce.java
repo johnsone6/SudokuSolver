@@ -57,7 +57,7 @@ public class SudokuBruteForce {
 	public boolean findSolution(){
 		long current = 0;
 		//Checks in case the puzzle is already solved
-		if (!checkColumns(board) || !checkRows(board)  || !checkBoxes(board)){
+		if (!duplicates(board)){
 			return true;
 		}
 
@@ -75,7 +75,7 @@ public class SudokuBruteForce {
 			//end testing stuff
 			
 			if(checkPuzzleSum(board, magicInt)){
-				if(!checkColumns(board) && !checkRows(board)  && !checkBoxes(board)){
+				if(!duplicates(board)){
 					return true;
 				}
 			}
@@ -196,7 +196,7 @@ public class SudokuBruteForce {
 	 * @param board the board to be checked
 	 * @return true if the board does not contain duplicates, false if the board contains duplicates
 	 */
-	public boolean noDuplicates(int board[][]){
+	public boolean duplicates(int board[][]){
 		//boolean dupeNums = false;
 		//int[][] b = board;
 
