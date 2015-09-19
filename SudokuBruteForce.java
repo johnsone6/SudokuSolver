@@ -3,13 +3,14 @@ import java.util.HashSet;
 
 public class SudokuBruteForce {
 
-	private int[][] board, blanks;
-	private int width, length, boardSize, magicInt, numBlanks, initialTotal;
+	private int[][] board, blanks, finalSolution;
+	private int width, length, boardSize, magicInt, numBlanks, initialTotal, upperLimit, puzzleSum;
 	private long maximumTries;
+	private boolean solutionFound;
 	//private Stack<Integer> count;
-	private int[] numbers;
+	//private int[] numbers;
 	//private Counter counter;
-	private ArrayCounter counter;
+	//private ArrayCounter counter;
 
 
 	/**
@@ -23,6 +24,8 @@ public class SudokuBruteForce {
 		this.length = length;
 		this.board = board;
 		this.boardSize = width * length;
+		this.upperLimit = boardSize;
+		this.solutionFound = false;
 
 		magicInt = calcSumInt(boardSize);
 		initialTotal = findInitialPuzzleSum();
@@ -34,19 +37,30 @@ public class SudokuBruteForce {
 			temp = temp * boardSize;
 		}
 		maximumTries = temp;
+		
+		
 		System.out.println(maximumTries + " possible combinations");
-		counter = new ArrayCounter(numBlanks, boardSize);
+		//counter = new ArrayCounter(numBlanks, boardSize);
 	}
 
 
 	/**
 	 * Gets the solution to the Sudoku board
-	 * @return the completed board
+	 * @return null if the board has not been found, or the completed board
 	 */
 	public int[][] getSolution(){
-		return this.board;
+		if (solutionFound){
+			return this.finalSolution;
+		}
+		else{
+			return null;
+		}
 	}
 
+	
+	public boolean hasSolution(){
+		return solutionFound;
+	}
 
 
 
@@ -57,25 +71,31 @@ public class SudokuBruteForce {
 	public boolean findSolution(){
 		long current = 0;
 		//Checks in case the puzzle is already solved
-		if (!duplicates(board)){
+		fillInSolution();
+		puzzleSum = findInitialPuzzleSum();
+		if (solutionFound || !duplicates(board)){
 			return true;
 		}
 
 
 		//Loops as long as there is a new number to use
-		while (counter.hasNext()){
-			numbers = counter.count();
-			fillInSolution();
+		while (hasNext()){
+			//numbers = counter.count();
+			count();
+			//fillInSolution();
 			
 			//Testing stuff, this displays the percentage of the numbers that have been checked
+			
 			current++;
 			if ((current % 1000000000) == 0){
-				System.out.println((((double)current / (double)maximumTries) * 100d)+ "% done");
+				System.out.println((((double)current / (double)maximumTries) * 100d)+ "% of numbers tried");
 			}
 			//end testing stuff
 			
-			if(checkPuzzleSum(board, magicInt)){
+			if(puzzleSum == magicInt/*checkPuzzleSum(board, magicInt)*/){
 				if(!duplicates(board)){
+					createFinalSolution(board);
+					solutionFound = true;
 					return true;
 				}
 			}
@@ -86,14 +106,49 @@ public class SudokuBruteForce {
 
 
 	/**
-	 * Fills all the unknown spaces in the board with the generated number
+	 * Fills all the unknown spaces in the board with a starting value
 	 */
 	public void fillInSolution(){
 		for (int i = 0; i < numBlanks; i++){
-			board[blanks[i][0]][blanks[i][1]] = numbers[i];
+			board[blanks[i][0]][blanks[i][1]] = 1;
 		}
 	}
+	
 
+	
+	/**
+	 * This method now computes the next number directly into the board
+	 * and determines the sum of the puzzle at the same time
+	 * 
+	 */
+	public void count() 
+	{
+		int count = numBlanks - 1;
+		
+		while(board[blanks[count][0]][blanks[count][1]] == upperLimit)
+		{
+			board[blanks[count][0]][blanks[count][1]] = 1;
+			puzzleSum -= (upperLimit - 1);
+			count--;
+		}
+		
+		board[blanks[count][0]][blanks[count][1]]++;
+		puzzleSum++;
+	}
+	
+	/**
+	 * Determines whether the counter has reached the end 
+	 * @return whether or not there is another number which can be generated
+	 */
+	public boolean hasNext(){
+		for (int i = numBlanks - 1; i >= 0; i--){
+			if (board[blanks[i][0]][blanks[i][1]] != upperLimit){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 
 
 	/**
@@ -157,6 +212,7 @@ public class SudokuBruteForce {
 	 * @return	whether or not the sum of this board matches the target sum
 	 */
 	public boolean checkPuzzleSum(int[][] board, int magicInt) {
+		/*
 		int sum = 0;
 		int mi = magicInt;
 		
@@ -170,6 +226,8 @@ public class SudokuBruteForce {
 		}
 		else 
 			return false;
+			*/
+		return true;
 	}
 
 
@@ -187,6 +245,21 @@ public class SudokuBruteForce {
 		}
 		
 		return sum;
+	}
+	
+	
+	/**
+	 * Copies the final board into a separate 2D array so we don't lose it
+	 * @param board the board to be copied
+	 */
+	private void createFinalSolution(int[][] board){
+		finalSolution = new int[boardSize][boardSize];
+		
+		for (int i = 0; i < boardSize; i++){
+			for (int j = 0; j < boardSize; j++){
+				finalSolution[i][j] = board[i][j];
+			}
+		}
 	}
 	
 	
@@ -227,25 +300,30 @@ public class SudokuBruteForce {
 	 * @return true if the columns of the board contain duplicated numbers, false if the columns do not contain duplicated numbers
 	 */
 	public boolean checkColumns(int board[][]){
-		boolean dupeNums = false;
-		int[][] b = board;
-		HashSet<Integer> hset;
+		//boolean dupeNums = false;
+		//int[][] b = board;
+		//HashSet<Integer> hset;
+		boolean[] numbers;
 
-		for (int i = 0; i < b.length; i++) {
-			hset = new HashSet<Integer>();
-			for (int j=0; j < b.length; j++) {
-				if (hset.contains(b[j][i])){
+		for (int i = 0; i < board.length; i++) {
+			//hset = new HashSet<Integer>();
+			numbers = new boolean[boardSize + 1];
+			for (int j=0; j < board.length; j++) {
+				if (/*hset.contains(board[j][i])*/numbers[board[j][i]]){
 					//System.out.println("column duplicates found: " + b[j][i]);
 					//System.out.println(i + " by " + j);
-					dupeNums = true;
-					return dupeNums;
+					//dupeNums = true;
+					return true;
 				}
-				else
-					hset.add(b[j][i]);
+				else{
+					//hset.add(board[j][i]);
+					numbers[board[j][i]] = true;
+				}
+					
 			}
 		}
 		//System.out.println("No column duplicates found!");
-		return dupeNums;
+		return false;
 	}
 
 
@@ -255,24 +333,29 @@ public class SudokuBruteForce {
 	 * @return true if the rows of the board contain duplicated numbers, false if the rows do not contain duplicated numbers
 	 */
 	public boolean checkRows(int board[][]){
-		boolean dupeNums = false;
-		int[][] b = board;
-
-		for (int i = 0; i < b.length; i++) {
-			HashSet<Integer> hset = new HashSet<Integer>();
-			for (int j=0; j < b.length; j++) {
-				if (hset.contains(b[i][j])){
+		//boolean dupeNums = false;
+		//int[][] b = board;
+		//HashSet<Integer> hset;
+		boolean[] numbers;
+		for (int i = 0; i < board.length; i++) {
+			//hset = new HashSet<Integer>();
+			numbers = new boolean[boardSize + 1];
+			for (int j=0; j < board.length; j++) {
+				if (/*hset.contains(board[i][j])*/ numbers[board[i][j]]){
 					//System.out.println("row duplicates found: " + b[j][i]);
 					//System.out.println(i + " by " + j);
-					dupeNums = true;
-					return dupeNums;
+					//dupeNums = true;
+					return true;
 				}
-				else
-					hset.add(b[i][j]);
+				else{
+					//hset.add(board[i][j]);
+					numbers[board[i][j]] = true;
+				}
+					
 			}
 		}
 		//System.out.println("No row duplicates found!");
-		return dupeNums;
+		return false;
 	}
 
 
