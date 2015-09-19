@@ -1,0 +1,43 @@
+c This should be solvable in a couple seconds
+2
+2
+0 0 2 0
+2 0 0 1
+4 0 0 3
+0 3 0 0
+
+
+c This is a somewhat pre-solved version of the puzzle she gave us, the program is capable of solving
+c it in around 20 seconds
+3
+2
+1 0 3 4 5 0
+4 5 6 0 0 3
+2 0 1 0 6 0
+5 6 4 2 0 0
+3 0 2 6 4 5
+6 0 5 3 0 2
+
+c This is the same as the above puzzle except missing one filled in number
+c The program takes about 150 seconds to solve it
+3
+2
+1 0 3 4 5 0
+4 0 6 0 0 3
+2 0 1 0 6 0
+5 6 4 2 0 0
+3 0 2 6 4 5
+6 0 5 3 0 2
+
+c This is the original puzzle, there are over 100,000,000,000,000 possible answers
+c I'm guessing the program will take at least a week+ to solve it (at least on my computer). 
+c Either we're doing something really wrong, or this project was intended to demonstrate the effects
+c of using a bad algorithm 
+3
+2
+1 0 3 4 0 0
+4 0 6 0 0 3
+2 0 1 0 6 0
+5 0 4 2 0 0
+3 0 2 0 4 0
+6 0 5 0 0 2
