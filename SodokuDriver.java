@@ -56,13 +56,19 @@ public class SudokuDriver {
 				
 				//Creates the solver object
 				solver = new SudokuBruteForce(width, length, board);
-				System.out.println(solver.findSolution() + ": No solution found!");
-				
-				board = solver.getSolution();
 				
 				
-				if(solver.findSolution())
+				
+				
+				if(solver.findSolution()){
+					System.out.println("Solution found: ");
+					board = solver.getSolution();
 					printBoard(board);
+				}
+				else{
+					System.out.println("No solution found");
+				}
+					
 				
 					
 				
