@@ -20,7 +20,7 @@ public class SudokuDriver {
 		String input;
 		SudokuBruteForce solver;
 		
-		
+		Timer time = new Timer();
 		
 		//Main loop for user input
 		for (int i = 0; i < MAX_TRIES; i++){
@@ -35,7 +35,7 @@ public class SudokuDriver {
 						break;
 					}
 				}
-				
+				time.start();
 				//Reads the dimensions of the board
 				width = Integer.parseInt(input);
 				length = fileScanner.nextInt();
@@ -68,6 +68,11 @@ public class SudokuDriver {
 				else{
 					System.out.println("No solution found");
 				}
+				time.stop();
+				
+				System.out.println("Time: " + time.getDuration());
+				
+				
 					
 				
 					
